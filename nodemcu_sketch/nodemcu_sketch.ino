@@ -5,6 +5,8 @@
 
 #define FIREBASE_HOST "YOUR_FIREBASE_HOST_URL" //Without http:// or https:// schemes
 #define FIREBASE_AUTH "YOUR_FIREBASE_AUTHORIZATION_TOKEN"
+#define FIREBASE_BUCKET "YOUR_FIREBASE_BCUKET"
+
 #define WIFI_SSID "YOUR_WIFI_SSID_HERE"
 #define WIFI_PASSWORD "YOUR_WIFI_PASSWORD_HERE"
 
@@ -97,7 +99,7 @@ float getValueFromMsg(char type, String msg) {
 }
 
 void firebaseUpdate(){
-  if (Firebase.setFloat(firebaseData, "/ASB Arduino Project/temperature", dht_m.t))
+  if (Firebase.setFloat(firebaseData, FIREBASE_BUCKET + "/temperature", dht_m.t))
   {
     Serial.println("PASSED");
     Serial.println("PATH: " + firebaseData.dataPath());
@@ -114,7 +116,7 @@ void firebaseUpdate(){
     Serial.println();
   }
 
-  if (Firebase.setFloat(firebaseData, "/ASB Arduino Project/humidity", dht_m.h))
+  if (Firebase.setFloat(firebaseData,  FIREBASE_BUCKET + "/humidity", dht_m.h))
   {
     Serial.println("PASSED");
     Serial.println("PATH: " + firebaseData.dataPath());
@@ -131,7 +133,7 @@ void firebaseUpdate(){
     Serial.println();
   }
 
-  if (Firebase.setFloat(firebaseData, "/ASB Arduino Project/brightness", sensorValue))
+  if (Firebase.setFloat(firebaseData,  FIREBASE_BUCKET + "/brightness", sensorValue))
   {
     Serial.println("PASSED");
     Serial.println("PATH: " + firebaseData.dataPath());
