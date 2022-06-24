@@ -2,15 +2,16 @@
 #include <Wire.h>
 #include "DHT.h"
 
-#define BUZZER 3  // D3
+#define BUZZER_PIN 3  // D3
 #define LIGHT_SENSOR A0
-#define DHTPIN 4  // D4
-#define DHTTYPE DHT11
-#define LED 5
+#define DHT_PIN 4  // D4
+#define DHT_TYPE DHT11
+#define LED_PIN 5 //
 
-DHT dht(DHTPIN, DHTTYPE);
+DHT dht(DHT_PIN, DHT_TYPE);
 float sensorValue;
 float Rsensor;
+int buzzer_enable;
 
 struct DHT_MEASURES{
   float h; // humidity
@@ -35,7 +36,7 @@ void setup(){
   Wire.onReceive(receiveEvent);
   Wire.onRequest(requestEvent);
  
-  pinMode(BUZZER, OUTPUT);
+  pinMode(BUZZER_PIN, OUTPUT);
 
   dht.begin();
   Serial.println("System initialized\n");
@@ -55,19 +56,19 @@ void receiveEvent(int howMany) {
     dataString = dataString + c;
   }
 
-  /* Assume received `LEDX` where X is a float number
-     If message is longer, ignore everything past that
-     float is contained in 6 bytes
+  /* Assume received `LEDX` where X is a light value from firebase.
+     If message is longer, ignore everything past that, value is stored as a 6
+     byte float
   */
   int value = dataString.substring(3, 3 + 6).toFloat();
   if(value == 1.0) {
-    digitalWrite(LED, HIGH);
+    digitalWrite(LED_PIN, HIGH);
   } else if (value == 0.0) {
-    digitalWrite(LED, LOW);
+    digitalWrite(LED_PIN, LOW);
   } else {
     Serial.print("Incorrect LED state value: ");
     Serial.print(value);
-    Serial.println(" leaving unchanged");
+    Serial.println(" leaving unchanged.");
   }
   Serial.println();
 }
@@ -108,14 +109,26 @@ void loop()
   String dataString = "";
   delay(2000);
 
-  /* Buzzer works great but it's annoying so comment it out for now */
-//  digitalWrite(BUZZER, HIGH);
-//  delay(200);
-//  digitalWrite(BUZZER, LOW);
-
   sensorValue = analogRead(LIGHT_SENSOR);
   Rsensor = (float)(1023-sensorValue)*10/sensorValue;
 
+  /* Make a sound if buzzer is not disabled manually */
+  if(sensorValue < 100) {
+    Wire.requestFrom(8, 4); // 3 (BUZ) + 1 (String value)
+    while (Wire.available()) {
+      char c = Wire.read();
+      dataString = dataString + c;
+    }
+    if(buzzer_enable == "1") {
+      digitalWrite(BUZZER_PIN, HIGH);
+    } else if(buzzer_enable == "0"){
+      digitalWrite(BUZZER_PIN, LOW);
+    } else {
+      Serial.print("Incorrect Buzzer Enable value: ");
+      Serial.print(buzzer_enable);
+      Serial.println(" leaving unchanged.");
+    }
+  }
 
   Serial.print("Light brightness is ");
   Serial.print(sensorValue);
