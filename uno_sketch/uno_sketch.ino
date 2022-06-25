@@ -119,14 +119,21 @@ void loop()
       char c = Wire.read();
       dataString = dataString + c;
     }
-    if(buzzer_enable == "1") {
-      digitalWrite(BUZZER_PIN, HIGH);
-    } else if(buzzer_enable == "0"){
-      digitalWrite(BUZZER_PIN, LOW);
+
+    if(dataString.substring(1, 3) != "BUZ") {
+      Serial.print("Incorrect message received, expected: \`BUZ\`, received: ");
+      Serial.println(dataString);
     } else {
-      Serial.print("Incorrect Buzzer Enable value: ");
-      Serial.print(buzzer_enable);
-      Serial.println(" leaving unchanged.");
+      buzzer_enable = dataString.substring(3, 1);
+      if(buzzer_enable == "1") {
+        digitalWrite(BUZZER_PIN, HIGH);
+      } else if(buzzer_enable == "0"){
+        digitalWrite(BUZZER_PIN, LOW);
+      } else {
+        Serial.print("Incorrect Buzzer Enable value: ");
+        Serial.print(buzzer_enable);
+        Serial.println(" leaving unchanged.");
+      }
     }
   }
 
