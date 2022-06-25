@@ -32,6 +32,7 @@ DHT_MEASURES dht_m;
 void setup(){
   Serial.begin(9600);
   Wire.begin(D1, D2); /* join i2c bus with SDA=D1 and SCL=D2 of NodeMCU */
+  Wire.onRequest(requestEvent);
 
   /* Configure WiFi network */
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
@@ -51,6 +52,30 @@ void setup(){
   Firebase.reconnectWiFi(true);
 
   Serial.println("System initialized\n");
+}
+
+void requestEvent() {
+  String buzzerEnableData;
+  if (Firebase.getString(buzzerEnableData, "/ASB Arduino Project/buzzer_enable")
+  {
+    Serial.println("PASSED");
+    Serial.println("PATH: " + firebaseData.dataPath());
+    Serial.println("TYPE: " + firebaseData.dataType());
+    Serial.println("ETag: " + firebaseData.ETag());
+    Serial.println("------------------------------------");
+    Serial.println();
+    if (Serial.available()) {
+      Wire.write("BUZ");
+      Wire.write(buzzerEnableData);
+    }
+  }
+  else
+  {
+    Serial.println("FAILED");
+    Serial.println("REASON: " + firebaseData.errorReason());
+    Serial.println("------------------------------------");
+    Serial.println();
+  }
 }
 
 void sensorUpdate() {
