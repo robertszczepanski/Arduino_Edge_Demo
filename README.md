@@ -1,6 +1,6 @@
 # Arduino Edge Demo
 
-The Arduino Edge Demo is a project focused on integrating an Arduino board with an ESP32 board to achieve Internet connection. The Arduino board is capable to read and write data to sensors and external devices (e.g. buzzer). The ESP32 is connected to the Firebase via WiFi connection so it can store data in external database. To extend control and display capabilities it's integrated with a mobile Android application which allows to change parameters of devices connected to the Arduino board and to read data from these devices.
+The Arduino Edge Demo is a project focused on integrating an Arduino board with an ESP8266 board to achieve Internet connection. The Arduino board is capable to read and write data to sensors and external devices (e.g. buzzer). The ESP8266 is connected to the Firebase via WiFi connection so it can store data in external database. To extend control and display capabilities it's integrated with a mobile Android application which allows to change parameters of devices connected to the Arduino board and to read data from these devices.
 
 
 # Features
