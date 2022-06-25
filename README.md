@@ -9,6 +9,8 @@ Project is targeted and has been tested on [Arduino Uno](https://store.arduino.c
 - [light sensor (photoresistor)](https://wiki.seeedstudio.com/Grove-Light_Sensor/)
 - [buzzer](https://wiki.seeedstudio.com/Grove-Buzzer/)
 
+It's optional but you might also want to have an [Arduino base shield](https://www.seeedstudio.com/Base-Shield-V2.html).
+
 To compile and upload software on selected boards you will also need [Arduino IDE](https://www.arduino.cc/en/software).
 
 
@@ -47,7 +49,7 @@ If you want to communicate with some database, first thing to do is creating it.
     3. Choose Database location to `United States` - **It's very important, other locations WILL NOT be compatible with a mobile app**.
     4. Start in `locked mode` and `Enable` database.
 
-3. Press `+` next to database URL and add a main key, you will have to copy it to the source code later, it might contain spaces. You should also add endpoint for application data under the one you just created. Required by the app are:
+3. Press `+` next to database URL and add a main key, it might contain spaces. You should also add endpoint for application data under the one you just created. Required by the app are:
     - `brightness`
     - `humidity`
     - `temperature`
@@ -71,9 +73,30 @@ Exported project from [MIT App Inventor](http://ai2.appinventor.mit.edu/) is ava
 3. In the pane on the right you should see component's `Properties`. Provide Firebase Token and URL that you saved earlier. As a `Project bucket` type a name of your main database key (`ASB Arduino Project` on screenshot above).
 
 
+# Circuit
+
+Once you've prepared a software, you also have to properly connect hardware components with each other. To do this follow the schematic and table below. On the schematic, it's assumed that you have an Arduino base shield on top of your Arduino board but you can also connect each pin directly to the board, omitting a base shield.
+
+Graphical representation:
+<img src="docs/components_circuit.png" alt="Final structure of created database"/>
+
+Table with pin connections:
+| Arduino UNO | NodeMCU | DHT Sensor | Light Sensor |
+|-------------|---------|------------|--------------|
+| GND         | GND     |            |              |
+| GND         |         | GND        |              |
+| GND         |         |            | GND          |
+| VCC         |         | VCC        |              |
+| VCC         |         |            | VCC          |
+| A0          |         |            | Analog Pin   |
+| D4          |         | Data Out   |              |
+| A4          | D1      |            |              |
+| A5          | D2      |            |              |
+
+
 # Build and flash
 
-Once you've satisfied all prerequisites you can move to setting up source code and compiling boards' software.
+Once you've satisfied all prerequisites and connected hardware, you can move to setting up source code and compiling boards' software.
 
 Before compiling make sure to set macros in `nodemcu_sketch.ino`:
 - `FIREBASE_HOST` - Firebase URL
@@ -82,6 +105,6 @@ Before compiling make sure to set macros in `nodemcu_sketch.ino`:
 - `WIFI_SSID` - WiFi network name
 - `WIFI_PASSWORD` - WiFi password
 
-After that connect a target board to PC, choose it in `Tools -> Board` and upload it with `Sketch -> Upload`.
+After that connect a target board to PC, choose it in `Tools -> Board` and upload it with `Sketch -> Upload`. Do this for both Arduino UNO and NodeMCU.
 
-If you did everything well, you should be able to see updated values in your mobile app.
+If you did everything correctly, you should be able to see updated values in your mobile app.
