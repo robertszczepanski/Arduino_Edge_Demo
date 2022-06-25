@@ -9,6 +9,7 @@ Arduino UNO:
 - Reading data from external peripherals
 - Writing data to external peripherals
 - Sending I2C messages to NodeMCU on demand
+- Reading I2C messages from NodeMCU on demand
 
 NodeMCU:
 - Connection to Internet via WiFI
@@ -19,6 +20,7 @@ NodeMCU:
 
 Mobile app:
 - Reading data from Google Firebase
+- Writing data to Google Firebase
 
 
 # Prerequisites
@@ -27,6 +29,7 @@ Project is targeted and has been tested on [Arduino Uno](https://store.arduino.c
 - [DHT11](https://www.adafruit.com/product/386) humidity and temperature sensor
 - [light sensor (photoresistor)](https://wiki.seeedstudio.com/Grove-Light_Sensor/)
 - [buzzer](https://wiki.seeedstudio.com/Grove-Buzzer/)
+- [LED](https://www.seeedstudio.com/Grove-Red-LED.html)
 
 It's optional but you might also want to have an [Arduino base shield](https://www.seeedstudio.com/Base-Shield-V2.html).
 
@@ -72,9 +75,9 @@ If you want to communicate with some database, first thing to do is creating it.
     - `brightness`
     - `humidity`
     - `temperature`
+    - `led`
 
-
-    At the end your database structure should look like on the screenshot below.
+    At the end your database structure should look like on the screenshot below. Depending on a version of application endpoint layout might be different but having less or more of them doesn't break anything. Missing endpoints will be created automatically and redundant ones will stay unused.
 
     <img src="docs/database_structure.png" alt="Final structure of created database"/>
 
@@ -100,17 +103,20 @@ Graphical representation:
 <img src="docs/components_circuit.png" alt="Final structure of created database"/>
 
 Table with pin connections:
-| Arduino UNO | NodeMCU | DHT Sensor | Light Sensor |
-|-------------|---------|------------|--------------|
-| GND         | GND     |            |              |
-| GND         |         | GND        |              |
-| GND         |         |            | GND          |
-| VCC         |         | VCC        |              |
-| VCC         |         |            | VCC          |
-| A0          |         |            | Analog Pin   |
-| D4          |         | Data Out   |              |
-| A4          | D1      |            |              |
-| A5          | D2      |            |              |
+| Arduino UNO | NodeMCU | DHT Sensor | Light Sensor | LED     |
+|-------------|---------|------------|--------------|---------|
+| GND         | GND     |            |              |         |
+| GND         |         | GND        |              |         |
+| GND         |         |            | GND          |         |
+| GND         |         |            |              | GND     |
+| VCC         |         | VCC        |              |         |
+| VCC         |         |            | VCC          |         |
+| VCC         |         |            |              | VCC     |
+| A0          |         |            | Analog Pin   |         |
+| D4          |         | Data Out   |              |         |
+| A4          | D1      |            |              |         |
+| A5          | D2      |            |              |         |
+| D5          |         |            |              | Data In |
 
 
 # Build and flash

@@ -151,9 +151,31 @@ void firebaseUpdate(){
   }
 }
 
+int readAndUpdateFirebaseLED(){
+  if (Firebase.getString(ledData, "/ASB Arduino Project/led")){
+    Serial.println(ledData.stringData());
+    if (ledData.stringData() == "1") {
+    sendLEDUpdate(HIGH);
+    }
+  else if (ledData.stringData() == "0"){
+    sendLEDUpdate(LOW);
+    }
+  }
+}
+
+void sendLEDUpdate(int state){
+  char buff[6];
+  dtostrf(float(state),6,2, buff);
+  if (Serial.available()) {
+    Wire.write("LED");
+    Wire.write(buff);
+  }
+}
+
 void loop()
 {
   sensorUpdate();
   firebaseUpdate();
+  readAndUpdateFirebaseLED();
   delay(2000);
 }

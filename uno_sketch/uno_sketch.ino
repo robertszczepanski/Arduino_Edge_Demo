@@ -6,6 +6,7 @@
 #define LIGHT_SENSOR A0
 #define DHTPIN 4  // D4
 #define DHTTYPE DHT11
+#define LED 5
 
 DHT dht(DHTPIN, DHTTYPE);
 float sensorValue;
@@ -31,6 +32,7 @@ void setup(){
   Serial.begin(9600);
 
   Wire.begin(8);                /* join i2c bus with address 8 */
+  Wire.onReceive(receiveEvent);
   Wire.onRequest(requestEvent);
  
   pinMode(BUZZER, OUTPUT);
@@ -43,6 +45,31 @@ void requestEvent() {
   sendHumidity();
   sendTemperature();
   sendBrightness();
+}
+
+void receiveEvent(int howMany) {
+  String dataString = "";
+
+  while (0 <Wire.available()) {
+    char c = Wire.read();      /* receive byte as a character */
+    dataString = dataString + c;
+  }
+
+  /* Assume received `LEDX` where X is a float number
+     If message is longer, ignore everything past that
+     float is contained in 6 bytes
+  */
+  int value = dataString.substring(3, 3 + 6).toFloat();
+  if(value == 1.0) {
+    digitalWrite(LED, HIGH);
+  } else if (value == 0.0) {
+    digitalWrite(LED, LOW);
+  } else {
+    Serial.print("Incorrect LED state value: ");
+    Serial.print(value);
+    Serial.println(" leaving unchanged");
+  }
+  Serial.println();
 }
 
 void sendHumidity() {
@@ -88,6 +115,7 @@ void loop()
 
   sensorValue = analogRead(LIGHT_SENSOR);
   Rsensor = (float)(1023-sensorValue)*10/sensorValue;
+
 
   Serial.print("Light brightness is ");
   Serial.print(sensorValue);
