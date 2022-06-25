@@ -9,6 +9,7 @@ Arduino UNO:
 - Reading data from external peripherals
 - Writing data to external peripherals
 - Sending I2C messages to NodeMCU on demand
+- Reading I2C messages from NodeMCU on demand
 
 NodeMCU:
 - Connection to Internet via WiFI
@@ -19,6 +20,7 @@ NodeMCU:
 
 Mobile app:
 - Reading data from Google Firebase
+- Writing data to Google Firebase
 
 
 # Prerequisites
@@ -27,6 +29,7 @@ Project is targeted and has been tested on [Arduino Uno](https://store.arduino.c
 - [DHT11](https://www.adafruit.com/product/386) humidity and temperature sensor
 - [light sensor (photoresistor)](https://wiki.seeedstudio.com/Grove-Light_Sensor/)
 - [buzzer](https://wiki.seeedstudio.com/Grove-Buzzer/)
+- [LED](https://www.seeedstudio.com/Grove-Red-LED.html)
 
 It's optional but you might also want to have an [Arduino base shield](https://www.seeedstudio.com/Base-Shield-V2.html).
 
