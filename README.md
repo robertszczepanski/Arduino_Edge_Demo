@@ -14,6 +14,7 @@ Arduino UNO:
 NodeMCU:
 - Connection to Internet via WiFI
 - Connection to Google Firebase
+- Sending I2C messages to Arduino UNO on demand
 - Reading I2C messages from Arduino UNO
 - Writing data to Google Firebase
 - Reading data from Google Firebase
@@ -76,6 +77,7 @@ If you want to communicate with some database, first thing to do is creating it.
     - `humidity`
     - `temperature`
     - `led`
+    - `buzzer_enable`
 
     At the end your database structure should look like on the screenshot below. Depending on a version of application endpoint layout might be different but having less or more of them doesn't break anything. Missing endpoints will be created automatically and redundant ones will stay unused.
 
@@ -103,20 +105,23 @@ Graphical representation:
 <img src="docs/components_circuit.png" alt="Final structure of created database"/>
 
 Table with pin connections:
-| Arduino UNO | NodeMCU | DHT Sensor | Light Sensor | LED     |
-|-------------|---------|------------|--------------|---------|
-| GND         | GND     |            |              |         |
-| GND         |         | GND        |              |         |
-| GND         |         |            | GND          |         |
-| GND         |         |            |              | GND     |
-| VCC         |         | VCC        |              |         |
-| VCC         |         |            | VCC          |         |
-| VCC         |         |            |              | VCC     |
-| A0          |         |            | Analog Pin   |         |
-| D4          |         | Data Out   |              |         |
-| A4          | D1      |            |              |         |
-| A5          | D2      |            |              |         |
-| D5          |         |            |              | Data In |
+| Arduino UNO | NodeMCU | DHT Sensor | Light Sensor | LED     | Buzzer  |
+|-------------|---------|------------|--------------|---------|---------|
+| GND         | GND     |            |              |         |         |
+| GND         |         | GND        |              |         |         |
+| GND         |         |            | GND          |         |         |
+| GND         |         |            |              | GND     |         |
+| GND         |         |            |              |         | GND     |
+| VCC         |         | VCC        |              |         |         |
+| VCC         |         |            | VCC          |         |         |
+| VCC         |         |            |              | VCC     |         |
+| VCC         |         |            |              |         | VCC     |
+| A0          |         |            | Analog Pin   |         |         |
+| D4          |         | Data Out   |              |         |         |
+| A4          | D1      |            |              |         |         |
+| A5          | D2      |            |              |         |         |
+| D5          |         |            |              | Data In |         |
+| D3          |         |            |              |         | Data In |
 
 
 # Build and flash
